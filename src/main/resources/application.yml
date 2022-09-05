@@ -1,0 +1,30 @@
+spring:
+  profiles:
+    active: db, dev, base-addi
+  thymeleaf:
+    cache: false
+    prefix: file:src/main/resources/templates/
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: create
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          github:
+#            clientId: [ NEED ]
+#            clientSecret: [ NEED ]
+#            scope: read:user, user:email
+#        provider:
+#          kakao:
+#            authorization-uri: https://kauth.kakao.com/oauth/authorize
+#            token-uri: https://kauth.kakao.com/oauth/token
+#            user-info-uri: https://kapi.kakao.com/v2/user/me
+#            user-name-attribute: id
+custom:
+  genFileDirPath: c:\Users\kyj01\data\upload
