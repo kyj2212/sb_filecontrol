@@ -12,13 +12,15 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+  output.ansi.enabled: ALWAYS
+
 logging:
 #  pattern:
 #    console: "[%d{HH:mm:ss.SSS}][%-5level][%logger.%method:line%line] - %msg%n"
   level:
     yejin.site : DEBUG
       # springframework: DEBUG
-spring.output.ansi.enabled: ALWAYS
+
 #  security:
 #    oauth2:
 #      client:
