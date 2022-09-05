@@ -17,8 +17,6 @@ import java.io.IOException;
 @Slf4j
 public class HomeController {
 
-    @Value("${custom.genFileDirPath}")
-    private String uploadDir;
     @RequestMapping("/")
     public String main(){
         return "home/main";
@@ -27,23 +25,5 @@ public class HomeController {
     public String upload(){
         return "home/test/upload";
     }
-    @PostMapping("/test/upload")
-    public String save(@RequestParam("img1") MultipartFile img1, @RequestParam("img2") MultipartFile img2) {
-        log.debug("file: "+img1.getName());
-        log.info("file: "+img1.getName());
-        if(!img1.isEmpty()){
-            String filename = img1.getOriginalFilename();
-            String fullPath = uploadDir + "/"+filename;
-            log.debug("uploaddir : "+fullPath);
-            log.info("uploaddir : "+fullPath);
-            try {
-                img1.transferTo(new File(fullPath));
-            } catch (IOException e) {
-                log.debug("failed file upload");
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            }
-        }
-        return "/home/test/upload";
-    }
+
 }
