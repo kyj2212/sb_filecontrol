@@ -20,12 +20,13 @@ public class FileUploadController {
         private String uploadDir;
 
         @PostMapping("")
-        public String save(@RequestParam("img1") MultipartFile img1, @RequestParam("img2") MultipartFile img2) {
+        public String save(@RequestParam("img1") MultipartFile img1, @RequestParam("img2") MultipartFile img2, @RequestParam("file") MultipartFile file1) {
             log.debug("file: " + img1.getName()+", "+img2.getName());
             if (!img1.isEmpty() && !img2.isEmpty()) {
                 try {
                     img1.transferTo(new File(uploadDir + "\\" +img1.getOriginalFilename()));
                     img2.transferTo(new File(uploadDir + "\\" +img2.getOriginalFilename()));
+                    file1.transferTo(new File(uploadDir + "\\" + file1.getOriginalFilename()));
                 } catch (IOException e) {
                     log.debug("failed file upload");
                     e.printStackTrace();
