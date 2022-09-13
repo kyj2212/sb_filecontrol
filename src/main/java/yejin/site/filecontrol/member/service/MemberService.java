@@ -1,6 +1,7 @@
 package yejin.site.filecontrol.member.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,6 +20,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberService {
 
     @Value("${custom.genFileDirPath}")
@@ -32,7 +34,11 @@ public class MemberService {
 
         String profileImgRealPath = "member/" + UUID.randomUUID().toString() + ".png";
         File profileImgFile = new File(uploadDir + "/"+profileImgRealPath);
-        profileImgFile.mkdir();
+
+
+        if(!profileImgFile.mkdirs()){
+            log.debug("파일 생성 실패");
+        }
 
         try{
             profileImg.transferTo(profileImgFile);
