@@ -80,7 +80,9 @@ public class SecurityConfig {
 //                .antMatchers(AUTH_AUTHENTICATED_LIST).authenticated()
         ;
         http
-                .csrf().ignoringAntMatchers("/h2-console/**");
+                .csrf().disable();
+                //.csrf().ignoringAntMatchers("/h2-console/**");
+
         http
                 .headers()
                 .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN));
