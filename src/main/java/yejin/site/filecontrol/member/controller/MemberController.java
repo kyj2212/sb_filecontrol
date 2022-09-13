@@ -50,19 +50,19 @@ public class MemberController {
             bindingResult.reject("signupEmailDuplicated", e.getMessage());
             return "/member/signup_form";
         }
-        return "redirect:/";
+        return "redirect:/member/profile";
     }
 
     @GetMapping("/login")
     public String login(MemberDto memberDto) {
-        return "login_form";
+        return "/member/login_form";
     }
 
-    @GetMapping("/members")
+    @GetMapping("/member/profile")
     public String detail(Model model, Principal principal){
         Member member = memberService.findByUsername(principal.getName());
         model.addAttribute("member",member);
-        return "member_detail";
+        return "/member/profile";
     }
 
     @DeleteMapping("/members/{id}")

@@ -1,0 +1,35 @@
+<html
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://www.thymeleaf.org"
+        layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
+    <!-- 헤더-->
+    <div class="my-3 border-bottom">
+        <div>
+            <h4>회원정보</h4>
+        </div>
+    </div>
+    <div>
+
+        <div class="mb-3">
+            <label for="name" class="form-label">이름</label>
+            <p th:text="${member.name}"></p>
+        </div>
+        <div class="mb-3">
+            <label for="username" class="form-label">ID</label>
+            <p th:text="${member.username}"></p>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">이메일</label>
+            <p th:text="${member.email}"></p>
+        </div>
+        <div class="bottombtn_box">
+            <button type="button" class="registerbtn bottombtn"  th:onclick="|location.href='@{|/members/${member.id}|}'|">회원정보수정</button>
+            <form id="deleteMember" th:action="@{|/members/${member.id}|}" method="post">
+                <input type="hidden" name="_method" value="delete"/>
+                <button id="delete-btn">회원탈퇴</button>
+            </form>
+        </div>
+    </div>
+</div>
+</html>
