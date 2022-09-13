@@ -2,8 +2,14 @@ package yejin.site.filecontrol.member.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.Authenticator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,6 +33,8 @@ public class MemberService {
     private String uploadDir;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private AuthenticationManager authenticationManager;
 
 
 
@@ -80,5 +88,10 @@ public class MemberService {
         orgMember.updateName(newMember.getName());
         orgMember.updateEmail(newMember.getEmail());
         orgMember.setEncryptedPassword(newMember.getPassword());
+    }
+
+    public void login(String username, String password) {
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
+        SecurityContextHolder.getContext().setAuthentication(token);
     }
 }

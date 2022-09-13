@@ -40,7 +40,8 @@ public class MemberController {
         }
 
         try {
-            memberService.create(memberDto.getUsername(), memberDto.getPassword1(), memberDto.getName(), memberDto.getEmail(),memberDto.getProfileImg());
+            Member member = memberService.create(memberDto.getUsername(), memberDto.getPassword1(), memberDto.getName(), memberDto.getEmail(),memberDto.getProfileImg());
+            memberService.login(memberDto.getUsername(),memberDto.getPassword1());
         } catch (SignupUsernameDuplicatedException e) {
             e.printStackTrace();
             bindingResult.reject("signupUsernameDuplicated", e.getMessage());
