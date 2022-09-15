@@ -71,6 +71,28 @@ public class MemberService {
         return member;
     }
 
+    public Member create(String username, String password, String name, String email) throws SignupUsernameDuplicatedException, SignupEmailDuplicatedException {
+
+        Member member = Member.builder()
+                .username(username)
+                .password(passwordEncoder.encode(password))
+                .name(name)
+                .email(email)
+                .build();
+
+        try {
+            memberRepository.save(member);
+        } catch (DataIntegrityViolationException e) {
+
+            if (memberRepository.existsByUsername(username)) {
+                throw new SignupUsernameDuplicatedException("중복된 ID 입니다.");
+            } else {
+                throw new SignupEmailDuplicatedException("중복된 이메일 입니다.");
+            }
+        }
+        return member;
+    }
+
     public Member findByUsername(String username) {
         return memberRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
@@ -94,5 +116,9 @@ public class MemberService {
     public void login(String username, String password) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
         SecurityContextHolder.getContext().setAuthentication(token);
+    }
+
+    public long count() {
+        return memberRepository.count();
     }
 }

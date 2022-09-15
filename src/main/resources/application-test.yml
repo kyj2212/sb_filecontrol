@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://t2.yejin.site:3306/filectl_test?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul
+    username: yejin
+    password: yejin1234
+    driver-class-name: org.mariadb.jdbc.Driver
