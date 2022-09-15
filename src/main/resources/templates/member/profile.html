@@ -23,6 +23,7 @@
             <label for="email" class="form-label">이메일</label>
             <p th:text="${member.email}"></p>
         </div>
+        <img class="profile-img" th:src="@{|/gen/${member.profileImg}|}">
         <div class="bottombtn_box">
             <button type="button" class="registerbtn bottombtn"  th:onclick="|location.href='@{|/members/${member.id}|}'|">회원정보수정</button>
             <form id="deleteMember" th:action="@{|/members/${member.id}|}" method="post">

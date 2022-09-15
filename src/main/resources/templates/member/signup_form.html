@@ -9,7 +9,7 @@
             <h4>회원가입</h4>
         </div>
     </div>
-    <form th:action="@{/signup}" th:object="${memberDto}" method="post">
+    <form th:action="@{/signup}" th:object="${memberDto}" method="post" enctype="multipart/form-data">
         <div th:replace="form_errors :: formErrorsFragment"></div>
 
         <div class="mb-3">

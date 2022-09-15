@@ -51,6 +51,7 @@ public class MemberService {
         try{
             profileImg.transferTo(profileImgFile);
         }catch (IOException e){
+            log.debug("파일 변환 실패");
             e.printStackTrace();
             throw new RuntimeException(e);
         }
