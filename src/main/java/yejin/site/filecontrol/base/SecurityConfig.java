@@ -33,7 +33,7 @@ public class SecurityConfig {
             "/admin/**"
     }; // admin 롤 만 허용
     private static final String[] AUTH_AUTHENTICATED_LIST = {
-
+            "/member/**"
     }; // 인가 필요
 
     private final MemberUserDetailService customUserDetailsService;
@@ -75,9 +75,9 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .antMatchers(AUTH_AUTHENTICATED_LIST).authenticated()
                 .antMatchers(AUTH_ALL_LIST).permitAll()
 //                .antMatchers(AUTH_ADMIN_LIST).hasRole("ADMIN")
-//                .antMatchers(AUTH_AUTHENTICATED_LIST).authenticated()
         ;
         http
                 .csrf().disable();
