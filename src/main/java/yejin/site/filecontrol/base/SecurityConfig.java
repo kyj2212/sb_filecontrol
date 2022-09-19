@@ -27,13 +27,15 @@ public class SecurityConfig {
             "/assets/**",
             "/error/**"}; // 정적 파일 인가 없이 모두 허용
     private static final String[] AUTH_ALL_LIST = {
-            "/**"
+            "/signup",
+            "/login"
     }; // 모두 허용
     private static final String[] AUTH_ADMIN_LIST = {
             "/admin/**"
     }; // admin 롤 만 허용
     private static final String[] AUTH_AUTHENTICATED_LIST = {
-            "/member/**"
+            "/member/**",
+            "/**"
     }; // 인가 필요
 
     private final MemberUserDetailService customUserDetailsService;
@@ -74,32 +76,37 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .antMatchers(AUTH_AUTHENTICATED_LIST).authenticated()
-                .antMatchers(AUTH_ALL_LIST).permitAll()
-//                .antMatchers(AUTH_ADMIN_LIST).hasRole("ADMIN")
-        ;
-        http
-                .csrf().disable();
-                //.csrf().ignoringAntMatchers("/h2-console/**");
+                .csrf(
+                        csrf -> csrf.disable()
+                        //.ignoringAntMatchers("/h2-console/**")
+                )
 
-        http
-                .headers()
-                .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN));
-        http
-                .formLogin()
-                .loginPage("/login") // get
-                .loginProcessingUrl("/login"); //post
-//                .successHandler(customSuccessHandler())
-//                .failureHandler(customFailureHandler);
-        http
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/")
-                .invalidateHttpSession(true);
-        http
-                .exceptionHandling()
-                .accessDeniedPage("/restrict");
+                .authorizeRequests(
+                        authorizeRequests -> authorizeRequests
+                                .antMatchers(AUTH_ALL_LIST).permitAll()
+                                .antMatchers(AUTH_AUTHENTICATED_LIST).authenticated()
+//                                .antMatchers(AUTH_ADMIN_LIST).hasRole("ADMIN")
+                )
+
+                .headers(
+                        headers -> headers.addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
+                )
+                .formLogin(
+                        formLogin -> formLogin
+                                .loginPage("/login") // get
+                                .loginProcessingUrl("/login") //post
+                //                .successHandler(customSuccessHandler())
+                //                .failureHandler(customFailureHandler);
+                )
+                .logout(
+                        logout -> logout
+                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                                .logoutSuccessUrl("/")
+                                .invalidateHttpSession(true)
+                )
+                .exceptionHandling(
+                        exceptionHandling -> exceptionHandling.accessDeniedPage("/restrict")
+                );
         return http.build();
     }
 
