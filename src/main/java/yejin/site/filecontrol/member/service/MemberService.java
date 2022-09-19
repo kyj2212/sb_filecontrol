@@ -39,12 +39,12 @@ public class MemberService {
 
 
     public Member create(String username, String password, String name, String email, MultipartFile profileImg) throws SignupUsernameDuplicatedException, SignupEmailDuplicatedException {
-
+        log.debug("profileimg : " +profileImg.getContentType() );
         String profileImgRealPath = "member/" + UUID.randomUUID().toString() + ".png";
         File profileImgFile = new File(uploadDir + "/"+profileImgRealPath);
+        log.debug("profileImgFile : "+ profileImgFile);
 
-
-        if(!profileImgFile.mkdirs()){
+        if(!profileImgFile.getParentFile().mkdirs()){
             log.debug("파일 생성 실패");
         }
 
@@ -120,5 +120,11 @@ public class MemberService {
 
     public long count() {
         return memberRepository.count();
+    }
+
+    public void removeProfileImg(Member member) {
+        member.removeProfileImgOnStorage();
+        member.setProfileImg(null); // 일부러 null을 넣는 이유를 알고싶다. 왜 이미지를 지울까?
+        memberRepository.save(member);
     }
 }

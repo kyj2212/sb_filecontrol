@@ -1,19 +1,15 @@
 package yejin.site.filecontrol.member.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.*;
+import yejin.site.filecontrol.base.AppConfig;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.io.File;
 
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -66,4 +62,12 @@ public class Member {
         this.profileImg=profileImg;
     }
 
+    public void removeProfileImgOnStorage() {
+        if (profileImg == null || profileImg.trim().length() == 0) return;
+        String profileImgPath = getProfileImgPath();
+        new File(profileImgPath).delete();
+    }
+    private String getProfileImgPath() {
+        return AppConfig.GET_FILE_DIR_PATH + "/" + profileImg;
+    }
 }

@@ -88,7 +88,8 @@ public class SecurityConfig {
                 .addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN));
         http
                 .formLogin()
-                .loginPage("/login");
+                .loginPage("/login") // get
+                .loginProcessingUrl("/login"); //post
 //                .successHandler(customSuccessHandler())
 //                .failureHandler(customFailureHandler);
         http
