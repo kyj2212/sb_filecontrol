@@ -19,6 +19,7 @@ import yejin.site.filecontrol.base.exception.SignupEmailDuplicatedException;
 import yejin.site.filecontrol.base.exception.SignupUsernameDuplicatedException;
 import yejin.site.filecontrol.member.entity.Member;
 import yejin.site.filecontrol.member.repository.MemberRepository;
+import yejin.site.filecontrol.util.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,12 +41,20 @@ public class MemberService {
 
     public Member create(String username, String password, String name, String email, MultipartFile profileImg) throws SignupUsernameDuplicatedException, SignupEmailDuplicatedException {
         log.debug("profileimg : " +profileImg.getContentType() );
-        String profileImgRealPath = "member/" + UUID.randomUUID().toString() + ".png";
-        File profileImgFile = new File(uploadDir + "/"+profileImgRealPath);
+
+        String ext = Util.file.getExt(profileImg.getOriginalFilename());
+        String profileImgDirName = getCurrentProfileImgDirName();
+        String profileImgFileName = UUID.randomUUID().toString() + "." + ext;
+
+        String profileImgDirPath = uploadDir + "/" + profileImgDirName;
+        String profileImgFilePath = profileImgDirPath + "/" +  profileImgFileName;
+
+
+        File profileImgFile = new File(profileImgFilePath);
         log.debug("profileImgFile : "+ profileImgFile);
 
-        if(!profileImgFile.getParentFile().mkdirs()){
-            log.debug("파일 생성 실패");
+        if(new File(profileImgDirPath).mkdirs()){
+            log.debug("디렉토리 생성 실패");
         }
 
         try{
@@ -55,7 +64,7 @@ public class MemberService {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
-
+        String profileImgRealPath = profileImgDirName + "/" + profileImgFileName;
         Member member = new Member(username, passwordEncoder.encode(password), name, email,profileImgRealPath);
 
         try {
@@ -93,6 +102,10 @@ public class MemberService {
         return member;
     }
 
+    private String getCurrentProfileImgDirName() {
+        return "member/" + Util.date.getCurrentDateFormatted("yyyy_MM_dd");
+    }
+
     public Member findByUsername(String username) {
         return memberRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
@@ -126,5 +139,8 @@ public class MemberService {
         member.removeProfileImgOnStorage();
         member.setProfileImg(null); // 일부러 null을 넣는 이유를 알고싶다. 왜 이미지를 지울까?
         memberRepository.save(member);
+    }
+    public void setProfileImgByUrl(Member member, String url){
+
     }
 }

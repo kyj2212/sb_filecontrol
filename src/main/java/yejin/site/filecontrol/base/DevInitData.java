@@ -19,6 +19,7 @@ public class DevInitData {
             String password = passwordEncoder.encode("1234");
             try {
                 memberService.create("user1", "1234","유저1", "user1@test.com");
+
                 memberService.create("user2", "1234", "유저2","user2@test.com");
             } catch (SignupUsernameDuplicatedException e) {
                 throw new RuntimeException(e);

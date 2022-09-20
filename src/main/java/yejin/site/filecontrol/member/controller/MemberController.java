@@ -63,7 +63,7 @@ public class MemberController {
     public String detail(Model model, Principal principal){
         Member member = memberService.findByUsername(principal.getName());
         model.addAttribute("member",member);
-        return "/member/profile";
+        return "member/profile";
     }
 
     @DeleteMapping("/members/{id}")

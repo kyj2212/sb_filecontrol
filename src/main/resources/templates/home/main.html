@@ -3,12 +3,6 @@
         xmlns:th="http://www.thymeleaf.org"
         layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3">
-    <header>
-        <div class="d-flex justify-content-end" th:if="${member!=null}">
-            <img class="profile-img mr-5" th:src="@{|/gen/${member.profileImg}|}">
-            <p class="mr-5" th:text="${member.name}"</p>
-        </div>
-    </header>
     <h1>메인</h1>
     <a th:href="@{/test/upload}">업로드</a>
 </div>
